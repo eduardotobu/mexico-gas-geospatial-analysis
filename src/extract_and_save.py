@@ -3,6 +3,9 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
+MX_TZ = ZoneInfo("America/Mexico_City")
 
 # 1. Define URLs and File Paths
 PRICES_URL = "https://publicacionexterna.azurewebsites.net/publicaciones/prices"
@@ -16,7 +19,8 @@ def fetch_and_parse_xml(url):
     return ET.fromstring(response.content)
 
 def main():
-    print(f"Starting extraction for {datetime.now().strftime('%Y-%m-%d')}...")
+    now = datetime.now(MX_TZ)
+    print(f"Starting extraction for {now.strftime('%Y-%m-%d')} (Mexico City time)...")
     
     # 2. Fetch the data
     prices_root = fetch_and_parse_xml(PRICES_URL)
@@ -56,11 +60,11 @@ def main():
     df_master = pd.merge(df_prices, df_places, on='place_id', how='inner')
     
     # Add a timestamp column so we can track inflation over time
-    df_master['date_extracted'] = datetime.now().strftime('%Y-%m-%d')
+    df_master['date_extracted'] = now.strftime('%Y-%m-%d')
 
     # 6. Save to CSV (one file per day)
     os.makedirs(RAW_DIR, exist_ok=True)
-    today = datetime.now().strftime('%Y-%m-%d')
+    today = now.strftime('%Y-%m-%d')
     output_file = os.path.join(RAW_DIR, f"gas_prices_{today}.csv")
     df_master.to_csv(output_file, index=False)
     
