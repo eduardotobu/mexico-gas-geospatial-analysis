@@ -1,4 +1,4 @@
-place_id,gas_type,price,longitude,latitude,date_extracted
+place_id,gas_type,price,longitude,latitude,date
 11703,regular,22.95,-101.6634,21.14916,2026-05-22
 11703,premium,27.9,-101.6634,21.14916,2026-05-22
 11702,regular,24.7,-107.7192,24.75731,2026-05-22

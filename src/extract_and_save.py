@@ -60,7 +60,7 @@ def main():
     df_master = pd.merge(df_prices, df_places, on='place_id', how='inner')
     
     # Add a timestamp column so we can track inflation over time
-    df_master['date_extracted'] = now.strftime('%Y-%m-%d')
+    df_master['date'] = now.strftime('%Y-%m-%d')
 
     # 6. Save to CSV (one file per day)
     os.makedirs(RAW_DIR, exist_ok=True)
