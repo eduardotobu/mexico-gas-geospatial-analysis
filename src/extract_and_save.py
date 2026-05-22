@@ -7,7 +7,7 @@ from datetime import datetime
 # 1. Define URLs and File Paths
 PRICES_URL = "https://publicacionexterna.azurewebsites.net/publicaciones/prices"
 PLACES_URL = "https://publicacionexterna.azurewebsites.net/publicaciones/places"
-DATA_FILE = "data/historical_gas_prices.csv"
+RAW_DIR = "data/raw"
 
 def fetch_and_parse_xml(url):
     """Fetches XML from a URL and returns the root element."""
@@ -58,12 +58,13 @@ def main():
     # Add a timestamp column so we can track inflation over time
     df_master['date_extracted'] = datetime.now().strftime('%Y-%m-%d')
 
-    # 6. Save to CSV (Append Mode)
-    # If the file exists, append without headers. If it doesn't, create it with headers.
-    file_exists = os.path.isfile(DATA_FILE)
-    df_master.to_csv(DATA_FILE, mode='a', index=False, header=not file_exists)
+    # 6. Save to CSV (one file per day)
+    os.makedirs(RAW_DIR, exist_ok=True)
+    today = datetime.now().strftime('%Y-%m-%d')
+    output_file = os.path.join(RAW_DIR, f"gas_prices_{today}.csv")
+    df_master.to_csv(output_file, index=False)
     
-    print(f"Success! {len(df_master)} records appended to {DATA_FILE}.")
+    print(f"Success! {len(df_master)} records saved to {output_file}.")
 
 if __name__ == "__main__":
     main()
