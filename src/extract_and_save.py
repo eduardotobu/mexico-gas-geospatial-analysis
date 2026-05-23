@@ -45,7 +45,7 @@ def merge_and_clean_gas_data(
         inplace (bool, optional): Whether to modify the primary DataFrame in place. Defaults to False.
 
     Returns:
-        pd.DataFrame: The merged and cleaned DataFrame containing both price and location data.
+        pd.DataFrame: The merged and cleaned DataFrame containing both price and location data with optimized data types (place_id: int, price/longitude/latitude: float, date: datetime).
 
     Raises:
         ValueError: If 'place_id' is missing from either of the input DataFrames.
@@ -78,6 +78,13 @@ def merge_and_clean_gas_data(
         
         # Add a timestamp column so we can track inflation over time
         df['date'] = extraction_date
+        
+        # 4. Convert data types for optimized storage
+        df['place_id'] = df['place_id'].astype(int)
+        df['price'] = df['price'].astype(float)
+        df['longitude'] = df['longitude'].astype(float)
+        df['latitude'] = df['latitude'].astype(float)
+        df['date'] = pd.to_datetime(df['date'])
         
         logger.info("Processing complete. Dataframes successfully merged.")
 
