@@ -3,8 +3,8 @@ name: Daily MX Gas Prices Scraper
 # This trigger tells GitHub when to run the script
 on:
   schedule:
-    # Runs at 06:30 UTC every day (12:30 AM CST in Mexico)
-    - cron: '30 6 * * *'
+    # Runs at 07:30 UTC every day (01:30 AM CST in Mexico)
+    - cron: '30 7 * * *'
   # Allows you to click a button on GitHub to run it manually
   workflow_dispatch: 
 
