@@ -32,7 +32,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/raw/
+          git add data/raw/ data/interim/
           
           # Only commit if there are actually changes to avoid failing the pipeline
           git diff --quiet && git diff --staged --quiet || (git commit -m "Automated data extraction: $(date +'%Y-%m-%d')" && git push)
