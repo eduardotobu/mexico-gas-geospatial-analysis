@@ -17,23 +17,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      # 2. Set up Python
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v6
+      # 2. Install uv and set up Python
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: '3.10'
+          enable-cache: true
 
-      # 3. Install Pandas and Requests
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      # 4. Run your Python script
+      # 3. Run your Python script (uv handles dependencies automatically)
       - name: Run Data Extraction
-        run: python src/extract_and_save.py
+        run: uv run src/extract_and_save.py
 
-      # 5. Commit and Push the updated CSV back to the repo
+      # 4. Commit and Push the updated CSV back to the repo
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
