@@ -20,7 +20,7 @@ MX_TZ = ZoneInfo("America/Mexico_City")
 # 1. Define URLs and File Paths
 PRICES_URL = "https://publicacionexterna.azurewebsites.net/publicaciones/prices"
 PLACES_URL = "https://publicacionexterna.azurewebsites.net/publicaciones/places"
-RAW_DIR = "data/raw"
+INTERIM_DIR = "data/interim"
 
 def fetch_and_parse_xml(url: str) -> ET.Element:
     """Fetches XML from a URL and returns the root element."""
@@ -141,10 +141,10 @@ def main() -> None:
             inplace=False
         )
 
-        # 6. Save to CSV (one file per day)
-        os.makedirs(RAW_DIR, exist_ok=True)
-        output_file = os.path.join(RAW_DIR, f"gas_prices_{today_str}.csv")
-        df_master.to_csv(output_file, index=False)
+        # 6. Save to Parquet (one file per day)
+        os.makedirs(INTERIM_DIR, exist_ok=True)
+        output_file = os.path.join(INTERIM_DIR, f"gas_prices_{today_str}.parquet")
+        df_master.to_parquet(output_file, index=False)
         
         logger.info(f"Success! {len(df_master)} records saved to {output_file}.")
         
