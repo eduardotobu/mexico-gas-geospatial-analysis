@@ -61,7 +61,7 @@ def merge_and_clean_gas_data(
     
     # 1. Fail fast input validation
     if 'place_id' not in df.columns:
-        raise ValueError("The primary DataFrame 'df' must contain a 'place_id' column.")
+        raise ValueError("The primary DataFrame 'df_prices' must contain a 'place_id' column.")
     if 'place_id' not in df_places.columns:
         raise ValueError("The secondary DataFrame 'df_places' must contain a 'place_id' column.")
 
@@ -74,13 +74,13 @@ def merge_and_clean_gas_data(
     try:
         # 3. Core logic
         # Inner join so we only keep stations where we have BOTH the location and the price
-        df = pd.merge(df, df_places, on='place_id', how='inner')
+        df = pd.merge(df, df_places, on='place_id', how='outer')
         
         # Add a timestamp column so we can track inflation over time
         df['date'] = extraction_date
         
         # 4. Convert data types for optimized storage
-        df['place_id'] = df['place_id'].astype(int)
+        df['place_id'] = df['place_id'].astype('Int64')
         df['price'] = df['price'].astype(float)
         df['longitude'] = df['longitude'].astype(float)
         df['latitude'] = df['latitude'].astype(float)
