@@ -73,3 +73,7 @@ mexico-gas-geospatial-analysis/
    python src/process_data.py
    ```
 *(Note: To test the AWS S3 upload, you will need to configure your own `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your environment variables.)*
+
+# Referencias a tomar en cuenta para mapeo.
+https://deckgl.readthedocs.io/en/latest/layer.html -- Librería con mapas chidos para visualizar, parece ser que la hicieron los de uber
+https://hotelist.com/ -- Ejemplo para la app de precios de gasolina.
